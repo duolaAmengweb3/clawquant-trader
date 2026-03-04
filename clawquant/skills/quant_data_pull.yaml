@@ -1,0 +1,26 @@
+name: quant_data_pull
+description: |
+  Pull OHLCV market data for specified symbols and timeframes.
+  Stores data in local Parquet cache for fast subsequent access.
+usage: |
+  "拉取 BTC 和 ETH 过去10天的1小时K线数据"
+  "Pull 30 days of 4h data for BTC/USDT"
+command: |
+  cd "{project_root}" && .venv/bin/python -m clawquant.clawquant_cli --json data pull {symbols} --interval {interval} --days {days} --exchange {exchange}
+parameters:
+  symbols:
+    type: string
+    description: "Comma-separated trading pairs, e.g. BTC/USDT,ETH/USDT"
+    required: true
+  interval:
+    type: string
+    description: "Bar interval: 1m, 5m, 15m, 1h, 4h, 1d"
+    default: "1h"
+  days:
+    type: integer
+    description: "Number of days to fetch"
+    default: 10
+  exchange:
+    type: string
+    description: "Exchange name"
+    default: "binance"

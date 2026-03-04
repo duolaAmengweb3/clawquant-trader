@@ -1,0 +1,30 @@
+name: quant_backtest_batch
+description: |
+  Run batch backtests across multiple strategies and symbols.
+  Returns performance metrics for each combination.
+usage: |
+  "对比 DCA、MA交叉、Grid 在 BTC 和 ETH 上过去30天的表现"
+  "Backtest ma_crossover and dca on BTC/USDT,ETH/USDT for 30 days"
+command: |
+  cd "{project_root}" && .venv/bin/python -m clawquant.clawquant_cli --json backtest batch {strategies} --symbols {symbols} --interval {interval} --days {days} --capital {capital}
+parameters:
+  strategies:
+    type: string
+    description: "Comma-separated strategy names: dca,ma_crossover,grid"
+    required: true
+  symbols:
+    type: string
+    description: "Comma-separated trading pairs"
+    default: "BTC/USDT"
+  interval:
+    type: string
+    description: "Bar interval"
+    default: "1h"
+  days:
+    type: integer
+    description: "Backtest window in days"
+    default: 30
+  capital:
+    type: number
+    description: "Initial capital in USDT"
+    default: 10000

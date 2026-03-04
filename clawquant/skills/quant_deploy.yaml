@@ -1,0 +1,27 @@
+name: quant_deploy
+description: |
+  Deploy a strategy for paper or live trading.
+  Paper mode simulates orders; live mode requires explicit confirmation.
+usage: |
+  "用 MA交叉策略在 BTC 上开始模拟交易"
+  "Start paper trading ma_crossover on BTC/USDT"
+command: |
+  cd "{project_root}" && .venv/bin/python -m clawquant.clawquant_cli --json deploy {mode} {strategy} --symbol {symbol} --interval {interval} --capital {capital}
+parameters:
+  mode:
+    type: string
+    description: "Deployment mode: paper or live"
+    default: "paper"
+  strategy:
+    type: string
+    description: "Strategy name"
+    required: true
+  symbol:
+    type: string
+    default: "BTC/USDT"
+  interval:
+    type: string
+    default: "1h"
+  capital:
+    type: number
+    default: 10000

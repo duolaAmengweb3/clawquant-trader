@@ -1,0 +1,18 @@
+name: quant_report_get
+description: |
+  Generate comprehensive backtest reports including metrics, charts, and stability scores.
+  Supports JSON, Markdown, and PNG chart outputs.
+usage: |
+  "生成上次回测的报告"
+  "Generate report for run ma_crossover_btc_usdt_20260304_abc12345"
+command: |
+  cd "{project_root}" && .venv/bin/python -m clawquant.clawquant_cli --json report generate {run_id} --formats {formats}
+parameters:
+  run_id:
+    type: string
+    description: "Run ID from a previous backtest"
+    required: true
+  formats:
+    type: string
+    description: "Comma-separated output formats: json,md,charts"
+    default: "json,md,charts"

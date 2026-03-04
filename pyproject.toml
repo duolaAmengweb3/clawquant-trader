@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "clawquant"
+version = "0.1.0"
+description = "Quantitative trading research infrastructure for AI Agents"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "duolaAmeng"},
+]
+keywords = ["quantitative", "trading", "backtest", "crypto", "ccxt"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = [
+    "typer>=0.9.0",
+    "ccxt>=4.0.0",
+    "pandas>=2.0.0",
+    "matplotlib>=3.7.0",
+    "pydantic>=2.0.0",
+    "rich>=13.0.0",
+    "pyarrow>=14.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+clawquant = "clawquant.clawquant_cli:app"
+
+[project.urls]
+Homepage = "https://github.com/duolaAmengweb3/clawquant-trader"
+Repository = "https://github.com/duolaAmengweb3/clawquant-trader"
+
+[tool.setuptools.packages.find]
+include = ["clawquant*"]

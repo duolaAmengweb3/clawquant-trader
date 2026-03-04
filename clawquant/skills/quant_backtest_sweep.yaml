@@ -1,0 +1,32 @@
+name: quant_backtest_sweep
+description: |
+  Run parameter sweep (grid or random search) to find optimal strategy parameters.
+  Returns results sorted by stability score.
+usage: |
+  "扫描 MA交叉策略的最优参数，快线 5-20，慢线 20-50"
+  "Sweep ma_crossover fast_period=[5,10,20] slow_period=[20,30,50] on BTC/USDT"
+command: |
+  cd "{project_root}" && .venv/bin/python -m clawquant.clawquant_cli --json backtest sweep {strategy} --symbol {symbol} --interval {interval} --days {days} --grid '{param_grid}' --mode {mode}
+parameters:
+  strategy:
+    type: string
+    description: "Strategy name to sweep"
+    required: true
+  symbol:
+    type: string
+    description: "Trading pair"
+    default: "BTC/USDT"
+  interval:
+    type: string
+    default: "1h"
+  days:
+    type: integer
+    default: 30
+  param_grid:
+    type: string
+    description: 'JSON parameter grid, e.g. {"fast_period": [5,10,20], "slow_period": [20,30,50]}'
+    required: true
+  mode:
+    type: string
+    description: "grid or random"
+    default: "grid"
