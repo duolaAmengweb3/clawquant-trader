@@ -182,6 +182,10 @@ clawquant --json radar scan --symbols BTC/USDT
 | `dca` | Dollar Cost Averaging 定投 | Passive | `invest_amount`, `invest_interval` |
 | `ma_crossover` | Moving Average Crossover 均线交叉 | Trend Following | `fast_period`, `slow_period`, `ma_type` |
 | `grid` | Grid Trading 网格交易 | Mean Reversion | `grid_count`, `grid_spacing_pct`, `order_amount` |
+| `rsi_reversal` | RSI Reversal RSI反转 | Mean Reversion | `rsi_period`, `oversold`, `overbought` |
+| `bollinger_bands` | Bollinger Bands 布林带 | Mean Reversion | `bb_period`, `bb_std` |
+| `macd` | MACD 指数平滑异同移动平均线 | Trend Following | `fast_period`, `slow_period`, `signal_period` |
+| `breakout` | Donchian Breakout 唐奇安突破 | Trend Following | `lookback` |
 
 ---
 
