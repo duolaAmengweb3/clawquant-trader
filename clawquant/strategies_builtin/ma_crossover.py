@@ -51,7 +51,7 @@ class MACrossoverStrategy(BaseStrategy):
                     "position_pct": {
                         "type": "number",
                         "description": "Fraction of equity to allocate per trade.",
-                        "default": 0.1,
+                        "default": 0.95,
                         "minimum": 0.01,
                         "maximum": 1.0,
                     },
@@ -120,16 +120,17 @@ class MACrossoverStrategy(BaseStrategy):
         if signal == 0:
             return 0.0
 
-        position_pct = params.get("position_pct", 0.1)
-        equity = portfolio_state.equity
+        position_pct = params.get("position_pct", 0.95)
+        total_pos_value = sum(portfolio_state.position_values.values())
 
         if signal == 1:
-            # Buy: use position_pct of equity, limited by available cash
-            amount = equity * position_pct
+            if total_pos_value > 0:
+                return 0.0  # Already holding, skip
+            amount = portfolio_state.equity * position_pct
             return min(amount, portfolio_state.cash)
         elif signal == -1:
-            # Sell: close entire position
-            total_pos_value = sum(portfolio_state.position_values.values())
+            if total_pos_value == 0:
+                return 0.0  # Nothing to sell
             return -total_pos_value
 
         return 0.0
