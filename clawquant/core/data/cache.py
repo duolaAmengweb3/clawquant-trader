@@ -48,7 +48,8 @@ def read_cache(symbol: str, interval: str) -> Optional[pd.DataFrame]:
         logger.debug("Cache hit: %s (%d rows)", path, len(df))
         return df
     except Exception:
-        logger.exception("Failed to read cache file %s", path)
+        logger.warning("Corrupted cache file %s — removing and will re-fetch", path)
+        path.unlink(missing_ok=True)
         return None
 
 
@@ -103,7 +104,8 @@ def cache_status() -> List[Dict]:
                 }
             )
         except Exception:
-            logger.exception("Could not read %s", path)
+            logger.warning("Corrupted cache file %s — removing", path)
+            path.unlink(missing_ok=True)
     return entries
 
 
