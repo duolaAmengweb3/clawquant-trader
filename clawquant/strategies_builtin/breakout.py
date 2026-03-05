@@ -102,8 +102,9 @@ class BreakoutStrategy(BaseStrategy):
             amount = equity * position_pct
             return min(amount, portfolio_state.cash)
         elif signal == -1:
+            # Sell: close entire position
             total_pos_value = sum(portfolio_state.position_values.values())
-            return -min(total_pos_value * position_pct, total_pos_value)
+            return -total_pos_value
 
         return 0.0
 
