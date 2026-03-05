@@ -121,7 +121,9 @@ When the user asks to find, compare, or optimize strategies, follow this workflo
 
 ### Step 1: Batch Compare
 
-Run `backtest batch` with all relevant strategies. Rank results by `total_return_pct` (primary) and `sharpe_ratio` (secondary).
+Run `backtest batch` with all relevant strategies **and all requested symbols**. If user asks for BTC and ETH, include both in `--symbols`. Parse the JSON output carefully — each entry in the result array has a `run_id` field containing the strategy name and symbol (e.g. `ma_crossover_btc_usdt_...`). Report results for EVERY symbol separately. Do NOT say "no trades" unless the JSON output actually shows `total_trades: 0` for that entry.
+
+Rank results by `total_return_pct` (primary) and `sharpe_ratio` (secondary).
 
 ### Step 2: Pick the Winner
 
