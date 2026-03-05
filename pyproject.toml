@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "clawquant"
-version = "0.1.0"
+version = "0.2.0"
 description = "Quantitative trading research infrastructure for AI Agents"
 readme = "README.md"
 license = {text = "MIT"}

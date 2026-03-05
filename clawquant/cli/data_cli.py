@@ -6,15 +6,33 @@ These functions are wired into the main Typer application in
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
+from typing import Optional
+
 import typer
 
 from clawquant.core.utils.output import print_error, print_result, print_table
+
+
+def _parse_date(s: str) -> datetime:
+    """Parse a date string to a timezone-aware datetime."""
+    for fmt in ("%Y-%m-%d", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S"):
+        try:
+            dt = datetime.strptime(s, fmt)
+            return dt.replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+    raise typer.BadParameter(
+        f"Invalid date format: {s!r}. Use YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS"
+    )
 
 
 def pull(
     symbols: str,
     interval: str,
     days: int,
+    start: Optional[str],
+    end: Optional[str],
     exchange: str,
     json_mode: bool,
 ) -> None:
@@ -23,15 +41,31 @@ def pull(
     from clawquant.core.data.models import DataPullRequest
 
     symbol_list = [s.strip() for s in symbols.split(",")]
+
+    start_dt = _parse_date(start) if start else None
+    end_dt = _parse_date(end) if end else None
+
+    # Build description for user feedback
+    if start_dt:
+        time_desc = f"from {start_dt.strftime('%Y-%m-%d')}"
+        if end_dt:
+            time_desc += f" to {end_dt.strftime('%Y-%m-%d')}"
+        else:
+            time_desc += " to now"
+    else:
+        time_desc = f"last {days} days"
+
     typer.echo(
         f"[data pull] Fetching {symbol_list} | interval={interval} "
-        f"| days={days} | exchange={exchange}"
+        f"| {time_desc} | exchange={exchange}"
     )
 
     request = DataPullRequest(
         symbols=symbol_list,
         interval=interval,
         days=days,
+        start=start_dt,
+        end=end_dt,
         exchange=exchange,
     )
 
@@ -44,9 +78,9 @@ def pull(
     rows = []
     for sym, df in result.items():
         bar_count = len(df)
-        start = str(df["timestamp"].min()) if bar_count else "-"
-        end = str(df["timestamp"].max()) if bar_count else "-"
-        rows.append((sym, interval, bar_count, start, end))
+        start_str = str(df["timestamp"].min()) if bar_count else "-"
+        end_str = str(df["timestamp"].max()) if bar_count else "-"
+        rows.append((sym, interval, bar_count, start_str, end_str))
 
     print_table(
         headers=["Symbol", "Interval", "Bars", "Start", "End"],

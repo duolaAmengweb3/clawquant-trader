@@ -56,12 +56,15 @@ data_app = typer.Typer(help="Data management commands", no_args_is_help=True)
 def data_pull(
     symbols: str = typer.Argument(..., help="Comma-separated symbols, e.g. BTC/USDT,ETH/USDT"),
     interval: str = typer.Option("1h", "--interval", "-i", help="Bar interval"),
-    days: int = typer.Option(10, "--days", "-d", help="Number of days to fetch"),
+    days: int = typer.Option(10, "--days", "-d", help="Number of days to fetch (ignored if --start is set)"),
+    start: Optional[str] = typer.Option(None, "--start", help="Start date, e.g. 2026-01-01 or 2026-01-01T00:00:00"),
+    end: Optional[str] = typer.Option(None, "--end", help="End date, e.g. 2026-03-01 (default: now)"),
     exchange: str = typer.Option("binance", "--exchange", "-e", help="Exchange name"),
 ) -> None:
     """Pull OHLCV data for one or more symbols."""
     from clawquant.cli.data_cli import pull
-    pull(symbols=symbols, interval=interval, days=days, exchange=exchange, json_mode=_get_json_mode())
+    pull(symbols=symbols, interval=interval, days=days, start=start, end=end,
+         exchange=exchange, json_mode=_get_json_mode())
 
 
 @data_app.command("inspect")
